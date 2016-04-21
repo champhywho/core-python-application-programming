@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Regular Expressions.
 
 # Create regular expressions that:
@@ -171,6 +173,7 @@ with open(fl) as f:
 # 28. Area codes (the first set of three-digits and the accompanying hyphen)
 # are optional, that is, your regex should match both 800-555-1212 as well as
 # just 555-1212.
+patt = r'^(\d{3}-)?\d{3}-\d{4}$'
 
 # 29. Either parenthesized or hyphendated area codes are supported, not to
 # mention optionl; make your regex match 800-555-1212, 555-1212 and also
