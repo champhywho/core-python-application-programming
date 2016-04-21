@@ -115,7 +115,7 @@ with open(r'redata.txt') as f:
             print("Do not match!")
 
 
-# Create regular expressions that:
+# Create Regular Expressions That:
 # 19. Extract the complete timestamps from each line.
 patt = r'(.+?)::'
 with open(r'redata.txt') as f:
@@ -178,3 +178,98 @@ patt = r'^(\d{3}-)?\d{3}-\d{4}$'
 # 29. Either parenthesized or hyphendated area codes are supported, not to
 # mention optionl; make your regex match 800-555-1212, 555-1212 and also
 # (800) 555-1212.
+patt = r'^((\d{3}-)|(\(\d{3}\) ))?\d{3}-\d{4}$'
+
+
+# Regex Unilities. The final set of exercises make useful utility scrips when
+# processing online data.
+# 30. HTML Generation. Given a list of links (and optional short description),
+# whether user-provided on command-line, via input from another scrip, or from
+# a database, generate a Web page (.html) that includes all links as hypertext
+# anchors, which upon viewing in a Web browser, allows users to click those
+# links and visit the corresponding site. If the short descriptin is provided,
+# use that as the hypertext instead of the URL.
+
+list_of_links = [
+    ('https://developer.mozilla.org/en-US/', 'Mozilla Developer Network'),
+    ('https://developer.chrome.com/devtools', ''), # Chrome DevTools Overview
+    ('http://www.ibm.com/developerworks/learn/', 'IBM developerWorks')
+]
+
+with open('lins_web_page.html', 'w') as page:
+    page.write('<!DOCTYPE html>\n<html>\n<body>\n')
+    anchor = '<a href="{0}">{1}</a><br />\n'
+    for link in list_of_links:
+        page.write(anchor.format(link[0], link[1] if link[1] else link[0]))
+    page.write('</body>\n</html>')
+
+# 31. Tweet Scrub. Sometimes all you want to see is the plain text of a tweet
+# as posted to the Twetter service by user. Create a function that takes a tweet
+# and an optional 'meta' flag defaulted False, and then returns a string of the
+# scrubbed tweet, removing all the extraneous information, such as an "RT"
+# notation for "retweet", a leading ., and all "#hashtags". If the meta flag is
+# True, then also return a dict containing the the metadata. This can include
+# a key "RT", whose value is a tuple of strings of users who retweeted the
+# message, and/or a key "hashtags" with a tuple of the hashtags. If the values
+# don't exist (empty tuples), then don't even bother creating a key-value entry
+# for them.
+
+
+# 32. Amazon Screenscraper. Create a script that helps your to keep track of
+# your favorite books and how they're doing on Amazon (or any other online
+# bookseller that tracks book rankings). For example, the Amazon link for any
+# book is of the format, http://amazon.com/db/ISBN (for example,
+# http://amazon.com/dp/0132678209). You can then change the domain name to
+# check out equivalent rankings on Amazon sites in other countries, such as
+# Germany (.de), France (.fr), Japan (.jp), China (.cn), and the UK (.co.uk).
+# Use regular expressions or a markup parser, such as BeautifulSoup, lxml, or
+# html5lib to parse the ranking, and then let the user pass in a command-line
+# argument that specifies whether the output should be in plain text, perhaps
+# for inclusion in an e-mail body, or formatted in HTML for Web consumption.
+book_list = {
+    '0132678209': (
+        'Wesley Chun',
+        'Core Python Applications Programming',
+        '3rd Edition'),
+    '1491946008': (
+        'Luciano Ramalho',
+        'Fluent Python,
+        '1st Edition'),
+    '1491910291': (
+        'Ryan Mitchell',
+        'Web Scraping with Python: Collecting Data from the Modern Web',
+        '1st Edition'),
+    '1449364829': (
+        'Harry J. W. Percival',
+        'Test-Driven Development with Python',
+        '1st Edition'),
+    '1783555130': (
+        'Sebastian Raschka',
+        'Python Machine Learning',
+        '1st Edition'),
+}
+
+import re
+from urllib.request import urlopen
+from urllib.error import HTTPError
+
+def book_rankings(isbn, plain=True):
+    hldoms = ('.com', '.de', '.fr', '.co.jp', '.cn', '.co.uk')
+    patt = r'<span class="a-icon-alt">([\d\.]+) [\w\s]+</span>'
+    site = r'http://www.amazon{0}/dp/{1}'
+
+    for dom in hldoms:
+        url = site.format(dom, isbn)
+        try:
+            html = urlopen(url).read().decode()
+            try:
+                rank = re.search(patt, html)
+                if plain:
+                    rank = rank.group(1)
+                else:
+                    rank = rank.group()
+            except AttributeError:
+                rank = None
+        except HTTPError as err:
+            rank = 'Error_{0}'.format(err.getcode())
+        print('amazon{0:10}{1}'.format(dom, rank))
