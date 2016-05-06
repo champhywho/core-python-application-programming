@@ -196,7 +196,7 @@ list_of_links = [
     ('http://www.ibm.com/developerworks/learn/', 'IBM developerWorks')
 ]
 
-with open('lins_web_page.html', 'w') as page:
+with open('links_web_page.html', 'w') as page:
     page.write('<!DOCTYPE html>\n<html>\n<body>\n')
     anchor = '<a href="{0}">{1}</a><br />\n'
     for link in list_of_links:
