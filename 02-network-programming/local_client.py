@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import socket
-import os, os.path
+import os.path
 
 
 BUFSIZ = 1024
