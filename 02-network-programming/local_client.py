@@ -12,12 +12,11 @@ if os.path.exists(TMPFILE):
         client.connect(TMPFILE)
         while True:
             data = input('\nEnter a command:\n')
-            if not data:
-                break
+            if not data: break
             client.send(bytes(data, 'utf-8'))
+
             data = client.recv(BUFSIZ)
-            if not data:
-                break
+            if not data: break
             print(data.decode('utf-8'))
 else:
-  print("Couldn't Connect!")
+    print("Couldn't Connect!")

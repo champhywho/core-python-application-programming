@@ -20,10 +20,10 @@ with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as server:
         print("New connection accepted...")
         while True:
             data = conn.recv(BUFSIZ)
-            if not data:
-                break
-            else:
-                data = data.decode('utf-8')
+            if not data: break
+            data = data.decode('utf-8')
+
+            send_data = "Unknown command"
 
             if data == 'date':
                 send_data = ctime()
@@ -33,7 +33,6 @@ with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as server:
                 send_data = "\n".join(os.listdir())
             elif data.startswith('ls ') and len(data.split()) > 1:
                 send_data = "\n".join(os.listdir(data.split()[1]))
-            else:
-                send_data = "Unknown command"
+
             conn.send(bytes("\n--Response--\n{0}".format(send_data), 'utf-8'))
         print("...connection closed")
