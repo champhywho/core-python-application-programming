@@ -48,17 +48,17 @@
 # 8. Full-Duplex Chat. Update your solution to the previous exercise so that
 # your chat service is now full-duplex, meaning that both parties can send and
 # receive, independent of each other.
-"!!!Solution is postponed until 'threading'."
+"Done in full_duplex_chat_server.py and full_duplex_chat_client.py"
 
 
 # 9. Multi-User Full Duplex Chat. Further update your solution so that your
 # chat service is multi-user.
-"!!!Solution is postponed until 'threading'."
+
 
 
 # 10. Multi-User, Multiroom, Full Duplex Chat. Now make your chat service
 # multi-user and multiroom.
-"!!!Solution is postponed until 'threading'."
+
 
 
 # 11. Web Client. Write a TCP client that connects to port 80 of your favorite
